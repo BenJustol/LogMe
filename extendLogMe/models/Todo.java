@@ -1,7 +1,6 @@
 package models;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Scanner;
 
 /**
  * TO-DO class implements DailyLog. TO-DO uses a Task object as its data type. The task object contains a tasks
@@ -17,40 +16,50 @@ public class Todo implements DailyLog{
         listOfTasks = new ArrayList<>();
     }
 
-
+    /**
+     * Method to addEntry into a ArrayList of Task, takes in String
+     * */
     @Override
     public void addEntry(String entry)
     {
         Task task = new Task(entry, 0);
+        listOfTasks.add(task);
+        sort();
     }
 
     @Override
-    public boolean deleteEntry(int index)
+    public boolean deleteEntry(int index) throws IllegalArgumentException
     {
-        return listOfTasks.remove(listOfTasks.get(index));
+        if(index < 0 || index >= listOfTasks.size())
+            throw new IllegalArgumentException("Invalid index");
+        listOfTasks.remove(index);
+        return true;
     }
 
     @Override
     public String getEntry(int index) throws IllegalArgumentException
     {
+        if(index < 0 || index >= listOfTasks.size())
+            throw new IllegalArgumentException("Invalid index");
         return listOfTasks.get(index).toString();
     }
 
-    public void updatePriority(int taskId, int newPriority)
+    public void updatePriority(int taskId, int newPriority) throws IllegalArgumentException
     {
-        for(Task datum : listOfTasks)
-        {
-            if(datum.getId() == taskId)
-            {
-                datum.setPriority(newPriority) ;
-            }
-        }
-        sort();
+       for(Task datum : listOfTasks)
+       {
+           if(datum.getId() == taskId)
+           {
+               datum.setPriority(newPriority);
+               sort();
+               return;
+           }
+       }
+       throw new IllegalArgumentException("TaskID: " + taskId + " DNE");
     }
 
     public void sort()
     {
         listOfTasks.sort(Comparator.comparing(Task::isCompleted).thenComparingInt(Task::getPriority));
     }
-
 }
