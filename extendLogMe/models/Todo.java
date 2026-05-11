@@ -15,7 +15,7 @@ public class Todo implements DailyLog{
     /**
      * Default constructor that initializes a new list of task
      *
-     * @post listOfTasks = #listOfTasks
+     * @post listOfTasks = new listOfTasks
      * */
     public Todo()
     {
@@ -39,32 +39,27 @@ public class Todo implements DailyLog{
     }
 
     /**
-     * Deletes a task from the ArrayList at the specified index in the list
+     * Deletes a task from the ArrayList based on the task
      *
-     * @param index position of task to be deleted in the list
+     * @param task object to be deleted from the list of tasks
      *
      * @return a boolean value if successful removal of a task in a list
-     *
-     * @throws IllegalArgumentException if index < 0 OR index >= listOfTask.size()
      *
      * @post result == true AND listOfTasks.size() == old(listOfTask.size()) - 1
      * */
     @Override
-    public boolean deleteTask(Task task)
+    public boolean deleteTask(int index)
     {
-        return listOfTasks.remove(task);
+        listOfTasks.remove(index);
+        return true;
     }
 
     /**
-     * Method to return a task private data as a String
+     * Method to return all task in the list and outputs using task toString method
      *
-     * @param index of a task to delete in the list of Task
+     * @return String representation of all tasks in the listOfTask by calling the task toString method
      *
-     * @return String representation of a task data by calling the task toString function
-     *
-     * @pre index >= 0 AND index != null
-     *
-     * @post listOfTasks = #listOfTasks AND validateEntry(index) == true, return String representation of task
+     * @post listOfTasks = #listOfTasks AND returns String representation of task in form [description, completion, priority]
      * */
     @Override
     public List<Task> getAllTask()

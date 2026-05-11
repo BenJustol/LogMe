@@ -9,6 +9,6 @@ import java.util.List;
 * */
 public interface DailyLog {
     void addTask(String description);
-    boolean deleteTask(Task task);
+    boolean deleteTask(int index);
     List<Task> getAllTask();
 }
