@@ -18,15 +18,14 @@ public class Task {
      *
      * @param description sets this.description
      *
-     * @param priority sets this.priority
      *
      * @post this.description = description AND this.priority = priority AND this.completed = false
      *
      * */
-    public Task(String description, int priority)
+    public Task(String description)
     {
         this.description = description;
-        this.priority = priority;
+        this.priority = 0;
         this.id = nextId++;
         this.completed = false;
     }

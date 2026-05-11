@@ -1,6 +1,7 @@
 package models;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * TO-DO class implements DailyLog. TO-DO uses a Task object as its data type. The task object contains a tasks
@@ -9,7 +10,7 @@ import java.util.Comparator;
  * than by priority.
  * */
 public class Todo implements DailyLog{
-    private final ArrayList<Task> listOfTasks;
+    private final List<Task> listOfTasks;
 
     /**
      * Default constructor that initializes a new list of task
@@ -25,17 +26,15 @@ public class Todo implements DailyLog{
      * Adds a new Task into a ArrayList of Task, takes in String as param.
      * Defaults the priority to 0 AND sorts the task after added to the list
      *
-     * @param entry to set as the param for a creating a new task
      *
      * @pre entry != null
      *
      * @post listOfTask = new Task(entry, 0) AND listOfTask.sort()
      * */
     @Override
-    public void addEntry(String entry)
+    public void addTask(String description)
     {
-        Task task = new Task(entry, 0);
-        listOfTasks.add(task);
+        listOfTasks.add(new Task(description));
         sort();
     }
 
@@ -51,11 +50,9 @@ public class Todo implements DailyLog{
      * @post result == true AND listOfTasks.size() == old(listOfTask.size()) - 1
      * */
     @Override
-    public boolean deleteEntry(int index)
+    public boolean deleteTask(Task task)
     {
-        validateEntry(index);
-        listOfTasks.remove(index);
-        return true;
+        return listOfTasks.remove(task);
     }
 
     /**
@@ -70,10 +67,9 @@ public class Todo implements DailyLog{
      * @post listOfTasks = #listOfTasks AND validateEntry(index) == true, return String representation of task
      * */
     @Override
-    public String getEntry(int index)
+    public List<Task> getAllTask()
     {
-        validateEntry(index);
-        return listOfTasks.get(index).toString();
+        return new ArrayList<>(listOfTasks);
     }
 
     /**
@@ -90,11 +86,11 @@ public class Todo implements DailyLog{
      * */
     public void updatePriority(int taskId, int newPriority) throws IllegalArgumentException
     {
-       for(Task datum : listOfTasks)
+       for(Task task : listOfTasks)
        {
-           if(datum.getId() == taskId)
+           if(task.getId() == taskId)
            {
-               datum.setPriority(newPriority);
+               task.setPriority(newPriority);
                sort();
                return;
            }
@@ -107,16 +103,19 @@ public class Todo implements DailyLog{
      *
      * @post listOfTasks becomes sors
      * */
-    public void sort()
+    private void sort()
     {
         listOfTasks.sort(Comparator.comparing(Task::isCompleted).thenComparingInt(Task::getPriority));
     }
 
-    public void validateEntry(int index) throws IllegalArgumentException
+    @Override
+    public String toString()
     {
-        if(index < 0 || index >= listOfTasks.size())
+        StringBuilder outString = new StringBuilder();
+        for(Task task : listOfTasks)
         {
-            throw new IllegalArgumentException("Invalid Index...");
+            outString.append(task.getDescription()).append(" ").append(task.getPriority()).append("\n");
         }
+        return outString.toString();
     }
 }
